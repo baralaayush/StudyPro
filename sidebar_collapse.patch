@@ -1,0 +1,81 @@
+--- components/Dashboard.tsx
++++ components/Dashboard.tsx
+@@ -357,17 +357,16 @@
+     <div className="flex h-screen bg-[#f8fafc] overflow-hidden w-full fixed inset-0 font-sans">
+       {/* Mobile Sidebar Backdrop */}
+-      {isSidebarOpen && (
+-        <div className="fixed inset-0 bg-slate-950/50 backdrop-blur-sm z-[900] lg:hidden transition-opacity duration-300" onClick={() => setIsSidebarOpen(false)} />
++      {isSidebarOpen && !isSidebarPinned && (
++        <div className="fixed inset-0 bg-slate-950/50 backdrop-blur-sm z-[900] transition-opacity duration-300" onClick={() => setIsSidebarOpen(false)} />
+       )}
+ 
+       {/* Desktop Sidebar Spacer to preserve layout */}
+-      <div className={`hidden lg:block shrink-0 transition-all duration-300 ease-in-out ${isSidebarPinned ? 'w-[280px]' : 'w-[88px]'}`} />
++      <div className={`hidden lg:block shrink-0 transition-all duration-300 ease-in-out ${isSidebarPinned ? 'w-[280px]' : 'w-0'}`} />
+ 
+       {/* Sleek Dark Modern Sidebar */}
+       <aside className={`
+-        fixed inset-y-0 left-0 z-[1000] bg-[#4e46e5] transition-all duration-300 ease-in-out flex flex-col text-white border-r border-indigo-700/50 shrink-0 overflow-hidden group
+-        ${isSidebarOpen ? 'w-[280px] translate-x-0 shadow-2xl' : 'w-[280px] -translate-x-full lg:translate-x-0 lg:opacity-100'}
+-        ${isSidebarPinned ? 'lg:w-[280px]' : 'lg:w-[88px] hover:lg:w-[280px] hover:shadow-2xl lg:h-full'}
++        fixed inset-y-0 left-0 z-[1000] bg-[#4e46e5] transition-all duration-300 ease-in-out flex flex-col text-white border-r border-indigo-700/50 shrink-0 overflow-hidden w-[280px]
++        ${isSidebarPinned ? 'translate-x-0 shadow-none lg:relative' : (isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full')}
+       `}>
+         <div className="w-[280px] h-full flex flex-col min-w-[280px]">
+           {/* Brand Header */}
+@@ -376,7 +375,7 @@
+               <div className="bg-white p-2.5 rounded-2xl text-indigo-600 shadow-lg shadow-black/5">
+                 <GraduationCap size={24} strokeWidth={2.5} />
+               </div>
+-              <span className={`text-xl font-black text-white tracking-tight block transition-opacity duration-300 ${isSidebarPinned ? 'opacity-100' : 'opacity-100 lg:opacity-0 group-hover:opacity-100'}`}>StudyPro</span>
++              <span className="text-xl font-black text-white tracking-tight block">StudyPro</span>
+             </div>
+             
+             <div className="flex items-center gap-2">
+@@ -399,7 +398,9 @@
+                   key={item.id}
+                   onClick={() => {
+                     setActiveTab(item.id as Tab);
+-                    setIsSidebarOpen(false);
++                    if (!isSidebarPinned) {
++                      setIsSidebarOpen(false);
++                    }
+                     handleBackToDashboard();
+                     if (item.id === 'community') setChatUserId(null);
+                   }}
+@@ -414,7 +415,7 @@
+                     <span className={`transition-transform duration-200 group-hover/nav:scale-110 ${isActive ? 'text-indigo-600' : 'text-indigo-200 group-hover/nav:text-white'}`}>
+                       {item.icon}
+                     </span>
+-                    <span className={`text-sm font-bold tracking-wide transition-opacity duration-300 ${isSidebarPinned ? 'opacity-100' : 'opacity-100 lg:opacity-0 group-hover:opacity-100'}`}>{item.label}</span>
++                    <span className="text-sm font-bold tracking-wide">{item.label}</span>
+                   </div>
+                   {isActive && <ChevronRight size={16} className="text-indigo-400" />}
+                 </button>
+@@ -431,7 +432,7 @@
+           >
+             <div className="flex items-center gap-2.5">
+               <LogOut size={20} className="text-white" />
+-              <span className={`transition-opacity duration-300 ${isSidebarPinned ? 'opacity-100' : 'opacity-100 lg:opacity-0 group-hover:opacity-100'}`}>Sign Out</span>
++              <span className="text-sm font-bold tracking-wide">Sign Out</span>
+             </div>
+           </button>
+         </div>
+@@ -444,10 +445,12 @@
+         <header className="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200/60 flex items-center justify-between px-6 md:px-10 shrink-0 z-[200]">
+           <div className="flex items-center gap-4">
+-            <button 
+-              className="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-colors lg:hidden" 
+-              onClick={() => setIsSidebarOpen(true)}
+-            >
+-              <Menu size={22} />
+-            </button>
++            {!isSidebarPinned && (
++              <button 
++                className="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-colors" 
++                onClick={() => setIsSidebarOpen(true)}
++              >
++                <Menu size={22} />
++              </button>
++            )}
+             <div className="flex items-center gap-2">

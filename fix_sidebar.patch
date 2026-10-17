@@ -1,0 +1,15 @@
+--- components/Dashboard.tsx
++++ components/Dashboard.tsx
+@@ -359,9 +359,9 @@
+ 
+       {/* Sleek Dark Modern Sidebar */}
+       <aside className={`
+-        fixed inset-y-0 left-0 z-[1000] bg-[#4e46e5] transition-all duration-300 ease-in-out flex flex-col text-white border-r border-indigo-700/50 shrink-0 overflow-hidden group
+-        ${isSidebarOpen ? 'w-[280px] translate-x-0 shadow-2xl lg:relative' : 'w-[280px] -translate-x-full lg:translate-x-0 lg:relative lg:opacity-100'}
+-        ${isSidebarPinned ? 'lg:w-[280px]' : 'lg:w-[88px] hover:lg:w-[280px] hover:shadow-2xl absolute'}
++        fixed inset-y-0 left-0 z-[1000] bg-[#4e46e5] transition-all duration-300 ease-in-out flex flex-col text-white border-r border-indigo-700/50 shrink-0 overflow-hidden group lg:relative
++        ${isSidebarOpen ? 'w-[280px] translate-x-0 shadow-2xl' : 'w-[280px] -translate-x-full lg:translate-x-0 lg:opacity-100'}
++        ${isSidebarPinned ? 'lg:w-[280px]' : 'lg:w-[88px]'}
+       `}>
+         <div className="w-[280px] h-full flex flex-col min-w-[280px]">
+           {/* Brand Header */}

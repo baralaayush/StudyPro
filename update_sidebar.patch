@@ -1,0 +1,113 @@
+--- components/Dashboard.tsx
++++ components/Dashboard.tsx
+@@ -58,9 +58,10 @@
+     return (saved as Tab) || 'dashboard';
+   });
+   
+-  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
++  const [isSidebarPinned, setIsSidebarPinned] = useState(() => {
+     if (typeof window !== 'undefined') {
+       return window.innerWidth >= 1024;
+     }
+     return false;
+   });
++  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+   const [showAddModal, setShowAddModal] = useState(false);
+@@ -359,20 +360,20 @@
+ 
+       {/* Sleek Dark Modern Sidebar */}
+       <aside className={`
+-        fixed inset-y-0 left-0 z-[1000] bg-slate-900 transition-all duration-300 ease-in-out flex flex-col text-slate-300 border-r border-slate-800/80 shrink-0 overflow-hidden
+-        ${isSidebarOpen ? 'w-[280px] translate-x-0 shadow-2xl lg:relative' : 'w-[280px] -translate-x-full lg:w-0 lg:translate-x-0 lg:relative lg:border-none lg:opacity-0'}
++        fixed inset-y-0 left-0 z-[1000] bg-[#4e46e5] transition-all duration-300 ease-in-out flex flex-col text-white border-r border-indigo-700/50 shrink-0 overflow-hidden group
++        ${isSidebarOpen ? 'w-[280px] translate-x-0 shadow-2xl lg:relative' : 'w-[280px] -translate-x-full lg:translate-x-0 lg:relative lg:opacity-100'}
++        ${isSidebarPinned ? 'lg:w-[280px]' : 'lg:w-[88px] hover:lg:w-[280px] hover:shadow-2xl absolute'}
+       `}>
+         <div className="w-[280px] h-full flex flex-col min-w-[280px]">
+           {/* Brand Header */}
+-          <div className="p-7 flex items-center justify-between border-b border-slate-800/60 shrink-0">
++          <div className="p-7 flex items-center justify-between border-b border-white/10 shrink-0 h-20">
+             <div className="flex items-center gap-3.5">
+-              <div className="bg-gradient-to-tr from-indigo-500 to-indigo-600 p-2.5 rounded-2xl text-white shadow-lg shadow-indigo-500/25">
+-                <GraduationCap size={24} />
++              <div className="bg-white p-2.5 rounded-2xl text-indigo-600 shadow-lg shadow-black/5">
++                <GraduationCap size={24} strokeWidth={2.5} />
+               </div>
+-              <div>
+-                <span className="text-xl font-black text-white tracking-tight block">StudyPro</span>
+-              </div>
++              <span className="text-xl font-black text-white tracking-tight block transition-opacity duration-300 group-hover:opacity-100 lg:opacity-100">StudyPro</span>
+             </div>
++            
+             <button className="lg:hidden text-slate-400 hover:text-white" onClick={() => setIsSidebarOpen(false)}>
+               <X size={20} />
+             </button>
+           </div>
+ 
+           {/* Navigation Items */}
+           <div className="px-4 py-6 flex-1 overflow-y-auto no-scrollbar">
+-          <p className="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Main Navigation</p>
+           <nav className="space-y-1.5">
+             {navItems.map((item) => {
+               const isActive = activeTab === item.id;
+@@ -386,17 +387,17 @@
+                   }}
+                   className={`
+                     w-full flex items-center justify-between px-4 py-3.5 rounded-2xl font-semibold transition-all duration-200 group
+                     ${isActive 
+-                       ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-lg shadow-indigo-600/30' 
+-                       : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'}
++                       ? 'bg-white text-indigo-600 shadow-lg shadow-black/5' 
++                       : 'text-indigo-100 hover:bg-white/10 hover:text-white'}
+                   `}
+                 >
+                   <div className="flex items-center gap-3.5">
+-                    <span className={`transition-transform duration-200 group-hover:scale-110 ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-indigo-400'}`}>
++                    <span className={`transition-transform duration-200 group-hover:scale-110 ${isActive ? 'text-indigo-600' : 'text-indigo-200 group-hover:text-white'}`}>
+                       {item.icon}
+                     </span>
+-                    <span className="text-sm font-bold tracking-wide">{item.label}</span>
++                    <span className="text-sm font-bold tracking-wide transition-opacity duration-300 group-hover:opacity-100 lg:opacity-100">{item.label}</span>
+                   </div>
+-                  {isActive && <ChevronRight size={16} className="text-white/80" />}
++                  {isActive && <ChevronRight size={16} className="text-indigo-400" />}
+                 </button>
+               );
+             })}
+           </nav>
+         </div>
+ 
+         {/* Footer User & Logout */}
+-        <div className="mt-auto p-4 border-t border-slate-800/60 bg-slate-950/40 shrink-0">
++        <div className="mt-auto p-4 border-t border-white/10 bg-black/10 shrink-0">
+           <button
+             onClick={handleSignOut}
+-            className="w-full flex items-center justify-between px-4 py-3 rounded-xl font-bold text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-all text-xs tracking-wide"
++            className="w-full flex items-center justify-between px-4 py-3 rounded-xl font-bold text-indigo-100 hover:bg-white/10 hover:text-white transition-all text-sm tracking-wide group-hover:px-4"
+           >
+             <div className="flex items-center gap-2.5">
+-              <LogOut size={18} />
+-              <span>Sign Out</span>
++              <LogOut size={20} className="text-indigo-200" />
++              <span className="transition-opacity duration-300 group-hover:opacity-100 lg:opacity-100">Sign Out</span>
+             </div>
+           </button>
+         </div>
+@@ -439,9 +440,16 @@
+         {/* Top Header */}
+         <header className="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200/60 flex items-center justify-between px-6 md:px-10 shrink-0 z-[200]">
+           <div className="flex items-center gap-4">
+-            <button className="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-colors" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
++            <button 
++              className="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-colors hidden lg:block" 
++              onClick={() => setIsSidebarPinned(!isSidebarPinned)}
++            >
+               <Menu size={22} />
+             </button>
++            <button 
++              className="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-colors lg:hidden" 
++              onClick={() => setIsSidebarOpen(true)}
++            >
++              <Menu size={22} />
++            </button>
+             <div className="flex items-center gap-2">

@@ -1,0 +1,29 @@
+--- components/Dashboard.tsx
++++ components/Dashboard.tsx
+@@ -370,7 +370,7 @@
+               <div className="bg-white p-2.5 rounded-2xl text-indigo-600 shadow-lg shadow-black/5">
+                 <GraduationCap size={24} strokeWidth={2.5} />
+               </div>
+-              <span className="text-xl font-black text-white tracking-tight block transition-opacity duration-300 group-hover:opacity-100 lg:opacity-100">StudyPro</span>
++              <span className={`text-xl font-black text-white tracking-tight block transition-opacity duration-300 ${isSidebarPinned ? 'opacity-100' : 'lg:opacity-0 group-hover:opacity-100 opacity-100'}`}>StudyPro</span>
+             </div>
+             
+             <button className="lg:hidden text-indigo-200 hover:text-white transition-colors" onClick={() => setIsSidebarOpen(false)}>
+@@ -404,7 +404,7 @@
+                     <span className={`transition-transform duration-200 group-hover/nav:scale-110 ${isActive ? 'text-indigo-600' : 'text-indigo-200 group-hover/nav:text-white'}`}>
+                       {item.icon}
+                     </span>
+-                    <span className="text-sm font-bold tracking-wide transition-opacity duration-300 group-hover:opacity-100 lg:opacity-100">{item.label}</span>
++                    <span className={`text-sm font-bold tracking-wide transition-opacity duration-300 ${isSidebarPinned ? 'opacity-100' : 'lg:opacity-0 group-hover:opacity-100 opacity-100'}`}>{item.label}</span>
+                   </div>
+                   {isActive && <ChevronRight size={16} className="text-indigo-400" />}
+                 </button>
+@@ -421,7 +421,7 @@
+           >
+             <div className="flex items-center gap-2.5">
+               <LogOut size={20} className="text-indigo-200" />
+-              <span className="transition-opacity duration-300 group-hover:opacity-100 lg:opacity-100">Sign Out</span>
++              <span className={`transition-opacity duration-300 ${isSidebarPinned ? 'opacity-100' : 'lg:opacity-0 group-hover:opacity-100 opacity-100'}`}>Sign Out</span>
+             </div>
+           </button>
+         </div>
